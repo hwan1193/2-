@@ -1,0 +1,74 @@
+당신은 Kubernetes 보안 전문가입니다.
+
+아래는 kube-bench 도구의 분석 결과 로그입니다. 이 로그는 노드별로 수집된 점검 항목들로 구성되어 있으며, 항목 번호, 설명, 결과(PASS, FAIL, WARN), 대응 방안 등의 정보를 포함하고 있습니다.
+
+이 데이터를 바탕으로 다음과 같은 구성의 보안 진단 보고서를 원인에 근거하여 작성해 주세요. 마치 보안 컨설턴트가 작성한 정식 보고서처럼 전문적인 문체를 사용해 주세요. 보고서 출력은 아래 JSON 구조에 맞춰 작성해 주세요.(단, 주석은 없어야함)
+
+개요란은 본 보고서는...", "총 노드의 개수는..."이 포함되어 있어야 합니다.
+
+모든 주석("/"포함)은 절대로 없어야함.
+
+📘 [JSON 출력 구조]
+
+```json
+{
+  "개요": "string",
+  "통계": {
+    "전체": number,
+    "적합": number,
+    "부적합": number,
+    "경고": number
+  },
+  "주요_위험_항목": [
+    {
+      "항목": "string",
+      "설명": "string",
+      "대응": "string"
+    }
+  ],
+  "긴급_대응_필요": [
+    {
+      "항목": "string",
+      "설명": "string"
+    }
+  ]
+}
+```
+
+📄 [Flask 템플릿 예시]
+
+이 보고서는 아래 템플릿에서 렌더링됩니다:
+
+<h1>🔍 Kube-Bench 보안 진단 보고서</h1>
+
+<p><strong>진단 일시:</strong> 2025-05-15 22:00<br>
+<strong>분석 대상:</strong> Kubernetes Cluster (총 {{ 노드수 }}개 노드)</p>
+
+<h2>1. 개요</h2>
+<p>{{ 개요 }}</p>
+
+<h2>2. 주요 진단 결과 요약</h2>
+<ul>
+  <li>전체 검사 항목 수: <strong>{{ 통계.전체 }}</strong></li>
+  <li>적합 (PASS): <strong style="color:green">{{ 통계.적합 }}</strong></li>
+  <li>부적합 (FAIL): <strong style="color:red">{{ 통계.부적합 }}</strong></li>
+  <li>경고 (WARN): <strong style="color:orange">{{ 통계.경고 }}</strong></li>
+</ul>
+
+<h2>3. 핵심 보안 이슈</h2>
+<ul>
+  {% for item in 주요_위험_항목 %}
+    <li><strong>{{ item.항목 }}</strong>: {{ item.설명 }}<br>
+      <em>대응 방안:</em> {{ item.대응 }}</li>
+  {% endfor %}
+</ul>
+
+<h2>4. 분석 의견 및 권고</h2>
+<p>
+다음 항목들은 관리자에 의해 즉시 조치가 필요합니다:
+</p>
+<ol>
+  {% for item in 긴급_대응_필요 %}
+    <li>{{ item.항목 }} - {{ item.설명 }}</li>
+  {% endfor %}
+</ol>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>보안 분석 리포트</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f6f8;
+      padding: 50px;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 32px;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    p.subtitle {
+      color: #777;
+      font-size: 16px;
+      margin-bottom: 40px;
+    }
+
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .card {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px 30px;
+      width: 300px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+    }
+
+    .card-title {
+      font-size: 20px;
+      color: #1a73e8;
+      margin-bottom: 8px;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📊 보안 검사 리포트 대시보드</h1>
+  <p class="subtitle">Kubernetes 환경의 정적 분석 결과를 확인할 수 있습니다.</p>
+
+  <div class="card-container">
+    <a href="/kube-bench" class="card">
+      <div class="card-title">🛡️ Kube-Bench</div>
+      <div class="card-desc">CIS 기준에 따른 클러스터 보안 설정 점검 결과</div>
+    </a>
+
+    <a href="/kubescape" class="card">
+      <div class="card-title">🔍 Kubescape</div>
+      <div class="card-desc">네임스페이스, RBAC, 보안 정책 구성 분석 결과</div>
+    </a>
+
+    <a href="/grype" class="card">
+      <div class="card-title">🐞 Grype</div>
+      <div class="card-desc">컨테이너 이미지의 취약점 스캔 결과</div>
+    </a>
+
+    <a href="/report" class="card">
+      <div class="card-title">✅ ISMS-P / CSAP 체크리스트</div>
+      <div class="card-desc">보안 인증 기준 기반의 종합 대응 평가 보고서</div>
+    </a>
+  </div>
+
+</body>
+</html>

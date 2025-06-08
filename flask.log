@@ -1,0 +1,13 @@
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.0.0.6:5000
+Press CTRL+C to quit
+183.98.215.159 - - [15/May/2025 18:16:44] "GET / HTTP/1.1" 200 -
+183.98.215.159 - - [15/May/2025 18:31:55] "GET / HTTP/1.1" 200 -
+135.237.126.194 - - [15/May/2025 18:54:25] "GET /v2/ HTTP/1.1" 404 -
+80.82.70.133 - - [15/May/2025 19:39:22] code 400, message Bad request version ("¯nãY»bhlÿ(=':©\x82ÙoÈ¢×\x93\x98´ï\x80å¹\x90\x00(À")
+80.82.70.133 - - [15/May/2025 19:39:22] "\x16\x03\x02\x01o\x01\x00\x01k\x03\x02RHÅ\x1a#÷:Nßâ´\x82/ÿ\x09T\x9f§Äy°hÆ\x13\x8c¤\x1c="á\x1a\x98 \x84´,\x85¯nãY»bhlÿ(=':©\x82ÙoÈ¢×\x93\x98´ï\x80å¹\x90\x00(À" HTTPStatus.BAD_REQUEST -
+159.65.157.80 - - [15/May/2025 21:18:53] "GET / HTTP/1.1" 200 -
+159.65.157.80 - - [15/May/2025 21:18:53] "GET /favicon.ico HTTP/1.1" 404 -

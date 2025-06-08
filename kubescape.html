@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Kubescape 보안 분석 결과</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      margin: 0;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    h2, h3, h4 {
+      color: #2c3e50;
+      margin-top: 30px;
+    }
+
+    .summary-cards {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .card {
+      flex: 1;
+      background: #ecf0f1;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .card h4 {
+      margin-bottom: 10px;
+      font-size: 16px;
+      color: #555;
+    }
+
+    .card p {
+      font-size: 22px;
+      font-weight: bold;
+      margin: 0;
+      color: #1a73e8;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+
+    .framework {
+      background-color: #f9f9f9;
+      border-left: 5px solid #1a73e8;
+      padding: 15px 20px;
+      margin-top: 20px;
+      border-radius: 6px;
+    }
+
+    .recommend {
+      margin-top: 10px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-left: 5px solid #f39c12;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+    }
+
+    .recommend .severity {
+      font-weight: bold;
+      color: #e74c3c;
+    }
+
+    .recommend p {
+      margin: 4px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🔍 Kubescape 요약 결과</h2>
+
+    <div class="summary-cards">
+      <div class="card"><h4>전체 리소스 수</h4><p>{{ result.summary.total_resources }}</p></div>
+      <div class="card"><h4>실패한 컨트롤 수</h4><p>{{ result.summary.failed_controls }}</p></div>
+      <div class="card"><h4>컴플라이언스 점수</h4><p>{{ result.summary.compliance_score }}</p></div>
+    </div>
+
+    <h3>⚠️ 주요 이슈</h3>
+    <ul>
+      {% for issue in result.summary.critical_issues %}
+        <li>
+          <b>{{ issue.id }}</b>: {{ issue.description }}<br>
+          <em>영향받은 리소스:</em> {{ issue.affected_resources | join(', ') }}
+        </li>
+      {% endfor %}
+    </ul>
+
+    <h3>📚 프레임워크별 점검 결과</h3>
+    {% for fw in result.by_framework %}
+      <div class="framework">
+        <h4>{{ fw.name }} (점수: {{ fw.score }}점)</h4>
+        <p>실패한 컨트롤 수: {{ fw.failed_controls }}</p>
+        <p><strong>주요 권고사항:</strong></p>
+        {% for rec in fw.recommendations %}
+          <div class="recommend">
+            <p><span class="severity">[{{ rec.severity }}]</span> <strong>{{ rec.control_id }}</strong></p>
+            <p><b>문제 설명:</b> {{ rec.description }}</p>
+            <p><b>조치 권고:</b> {{ rec.recommendation }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Grype 취약점 스캔 보고서</title>
+  <style>
+    body {
+      font-family: "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      background-color: #f5f6f8;
+      margin: 0;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    h2, h3 {
+      color: #2c3e50;
+      margin-top: 30px;
+    }
+
+    .summary-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .card {
+      flex: 1;
+      min-width: 140px;
+      background: #ecf0f1;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .card h4 {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+
+    .card p {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 14px;
+      table-layout: fixed;
+    }
+
+    colgroup col:nth-child(1) { width: 15%; }
+    colgroup col:nth-child(2) { width: 25%; }
+    colgroup col:nth-child(3) { width: 10%; }
+    colgroup col:nth-child(4) { width: 10%; }
+    colgroup col:nth-child(5) { width: 40%; }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+      white-space: normal;
+      word-break: break-word;
+    }
+
+    th {
+      background-color: #f0f0f0;
+      color: #333;
+    }
+
+    tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+
+    .critical { color: red; font-weight: bold; }
+    .high { color: orange; font-weight: bold; }
+    .medium { color: #e6b800; font-weight: bold; }
+    .low { color: green; font-weight: bold; }
+    .negligible { color: gray; }
+
+    .fix {
+      font-style: italic;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🐞 Grype 취약점 스캔 요약</h2>
+
+    <p><strong>스캔 대상 이미지:</strong> {{ result.summary.image }}</p>
+
+    <div class="summary-cards">
+      <div class="card"><h4>전체 취약점 수</h4><p>{{ result.summary.total_vulnerabilities }}</p></div>
+      <div class="card"><h4>🟥 치명적(Critical)</h4><p class="critical">{{ result.summary.critical }}</p></div>
+      <div class="card"><h4>🟧 높음(High)</h4><p class="high">{{ result.summary.high }}</p></div>
+      <div class="card"><h4>🟨 중간(Medium)</h4><p class="medium">{{ result.summary.medium }}</p></div>
+      <div class="card"><h4>🟩 낮음(Low)</h4><p class="low">{{ result.summary.low }}</p></div>
+      <div class="card"><h4>⬜ 무시 가능(Negligible)</h4><p class="negligible">{{ result.summary.negligible }}</p></div>
+      <div class="card"><h4>🛠️ 수정 가능 항목</h4><p class="fix">{{ result.summary.fix_available }}</p></div>
+    </div>
+
+    <h3>🚨 주요 위험 취약점 상위 목록</h3>
+    <table>
+      <colgroup>
+        <col><col><col><col><col>
+      </colgroup>
+      <thead>
+        <tr>
+          <th>취약점 ID</th>
+          <th>관련 패키지</th>
+          <th>심각도</th>
+          <th>수정 버전</th>
+          <th>취약점 설명</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for vuln in result.top_vulnerabilities %}
+        <tr>
+          <td>{{ vuln.id }}</td>
+          <td>{{ vuln.package }}</td>
+          <td class="{{ vuln.severity|lower }}">{{ vuln.severity }}</td>
+          <td>{{ vuln.fix_version or "해결 방법 없음" }}</td>
+          <td>{{ vuln.description }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

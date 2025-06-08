@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Kube-Bench 보안 진단 보고서</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 40px;
+    }
+    .container {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      max-width: 900px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 26px;
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 10px;
+    }
+    h2 {
+      color: #34495e;
+      margin-top: 40px;
+      font-size: 20px;
+      border-left: 5px solid #3498db;
+      padding-left: 10px;
+    }
+    ul, ol {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    .pass { color: green; }
+    .fail { color: red; }
+    .warn { color: orange; }
+    .summary {
+      background: #ecf0f1;
+      padding: 10px 20px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 Kube-Bench 보안 진단 보고서</h1>
+
+    <strong>분석 대상:</strong> Kubernetes Cluster (총 {{ 노드수 }}개 노드)</p>
+
+    <h2>1. 개요</h2>
+    <p>{{ 개요 }}</p>
+
+    <h2>2. 주요 진단 결과 요약</h2>
+    <div class="summary">
+      전체 검사 항목 수: <strong>{{ 통계.전체 }}</strong><br>
+      ✅ 적합 (PASS): <strong class="pass">{{ 통계.적합 }}</strong><br>
+      ❌ 부적합 (FAIL): <strong class="fail">{{ 통계.부적합 }}</strong><br>
+      ⚠️ 경고 (WARN): <strong class="warn">{{ 통계.경고 }}</strong>
+    </div>
+
+    <h2>3. 핵심 보안 이슈</h2>
+    <ul>
+      {% for item in 주요_위험_항목 %}
+        <li>
+          <strong>{{ item.항목 }}</strong>: {{ item.설명 }}<br>
+          <em>대응 방안:</em> {{ item.대응 }}
+        </li>
+      {% endfor %}
+    </ul>
+
+    <h2>4. 분석 의견 및 권고</h2>
+    <p>다음 항목들은 관리자에 의해 즉시 조치가 필요합니다:</p>
+    <ol>
+      {% for item in 긴급_대응_필요 %}
+        <li>{{ item.항목 }} - {{ item.설명 }}</li>
+      {% endfor %}
+    </ol>
+  </div>
+</body>
+</html>

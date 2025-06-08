@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Gemini 보안 체크리스트</title>
+  <style>
+    body {
+      font-family: "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      background-color: #f5f6f8;
+      margin: 0;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 30px;
+      color: #2c3e50;
+    }
+
+    h2 {
+      margin-top: 40px;
+      color: #1a73e8;
+      border-left: 5px solid #1a73e8;
+      padding-left: 10px;
+    }
+
+    table {
+      width: 100%;
+      table-layout: fixed;
+      border-collapse: collapse;
+      margin-top: 15px;
+      margin-bottom: 40px;
+    }
+
+    colgroup col:nth-child(1) { width: 18%; }
+    colgroup col:nth-child(2) { width: 32%; }
+    colgroup col:nth-child(3) { width: 10%; }
+    colgroup col:nth-child(4) { width: 40%; }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    td.long {
+      white-space: normal;
+      overflow: visible;
+      text-overflow: initial;
+    }
+    th {
+      background-color: #f0f0f0;
+      font-weight: bold;
+    }
+
+    td.pass {
+      background-color: #e0f7e9;
+      font-weight: bold;
+      color: #2e7d32;
+    }
+
+    td.fail {
+      background-color: #fdecea;
+      font-weight: bold;
+      color: #c62828;
+    }
+
+    td.unknown {
+      background-color: #eee;
+      color: #555;
+    }
+
+    tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    a {
+      font-size: 16px;
+      color: #1a73e8;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🛡️ Gemini 보안 분석 체크리스트</h1>
+
+    <h2>✅ ISMS-P 결과</h2>
+    <table>
+      <colgroup>
+        <col><col><col><col>
+      </colgroup>
+      <thead>
+        <tr><th>항목</th><th>설명</th><th>결과</th><th>비고</th></tr>
+      </thead>
+      <tbody>
+        {% for item in isms %}
+        <tr>
+          <td>{{ item.항목 }}</td>
+          <td class="long">{{ item.설명 }}</td>
+          <td class="{% if '적합' in item.결과 %}pass{% elif '부적합' in item.결과 %}fail{% else %}unknown{% endif %}">
+            {{ item.결과 }}
+          </td>
+          <td class="long">{{ item.get('비고', '') }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2>✅ CSAP 결과</h2>
+    <table>
+      <colgroup>
+        <col><col><col><col>
+      </colgroup>
+      <thead>
+        <tr><th>항목</th><th>설명</th><th>결과</th><th>비고</th></tr>
+      </thead>
+      <tbody>
+        {% for item in csap %}
+        <tr>
+          <td>{{ item.항목 }}</td>
+          <td class="long">{{ item.설명 }}</td>
+          <td class="{% if '적합' in item.결과 %}pass{% elif '부적합' in item.결과 %}fail{% else %}unknown{% endif %}">
+            {{ item.결과 }}
+          </td>
+          <td class="long">{{ item.get('비고', '') }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p><a href="/">← 메인 메뉴로 돌아가기</a></p>
+  </div>
+</body>
+</html>
